@@ -658,6 +658,10 @@ img {
 }
 
 /** Login */
+
+.login-container p {
+  text-align: center;
+}
 .login-form {
   display: flex;
   flex-direction: column;

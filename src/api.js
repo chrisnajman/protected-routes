@@ -1,4 +1,4 @@
-const baseUrl = "/vanlife"
+const baseUrl = "/protected-routes"
 
 export async function getVans(id) {
   const url = id ? `${baseUrl}/api/vans/${id}` : `${baseUrl}/api/vans`

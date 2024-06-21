@@ -2,10 +2,12 @@ import {} from "react"
 import { Link, Outlet, useLoaderData } from "react-router-dom"
 import { FaCircleArrowLeft } from "react-icons/fa6"
 import HostVanDetailNav from "../../components/HostVanDetailNav"
+import { requireAuth } from "../../utils/require-auth"
 import { getHostVans } from "../../api.js"
 
 // eslint-disable-next-line react-refresh/only-export-components
-export function loader({ params }) {
+export async function loader({ params }) {
+  await requireAuth()
   return getHostVans(params.id)
 }
 

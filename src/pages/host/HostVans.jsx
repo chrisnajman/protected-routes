@@ -1,9 +1,11 @@
 import { Link, useLoaderData } from "react-router-dom"
 import { FaCircleArrowRight } from "react-icons/fa6"
+import { requireAuth } from "../../utils/require-auth"
 import { getHostVans } from "../../api.js"
 
 // eslint-disable-next-line react-refresh/only-export-components
-export function loader() {
+export async function loader() {
+  await requireAuth()
   return getHostVans()
 }
 

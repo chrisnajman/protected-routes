@@ -1,7 +1,14 @@
 import { useState } from "react"
-// import { useNavigate } from "react-router-dom"
+import { useLoaderData } from "react-router-dom"
+
+// eslint-disable-next-line react-refresh/only-export-components
+export function loader({ request }) {
+  return new URL(request.url).searchParams.get("message")
+}
 
 function Login() {
+  const message = useLoaderData()
+
   const [loginFormData, setLoginFormData] = useState({
     email: "",
     password: "",
@@ -21,7 +28,8 @@ function Login() {
   }
   return (
     <div className="login-container content-container">
-      <h1>Sign in to your account</h1>
+      <h1>Log in to your account</h1>
+      {message && <p>{message}</p>}
       <form
         onSubmit={handleSubmit}
         className="login-form"

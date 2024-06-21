@@ -5,7 +5,7 @@ import {
   createRoutesFromElements,
 } from "react-router-dom"
 import Layout from "./layout/Layout"
-import Login from "./pages/Login"
+import Login, { loader as loginLoader } from "./pages/Login"
 import Home from "./pages/Home"
 import About from "./pages/About"
 import Vans, { loader as vansLoader } from "./pages/vans/Vans"
@@ -36,6 +36,7 @@ const router = createBrowserRouter(
       <Route
         path="login"
         element={<Login />}
+        loader={loginLoader}
       />
       <Route
         path="about"
@@ -71,19 +72,13 @@ const router = createBrowserRouter(
         <Route
           path="host-vans"
           element={<HostVans />}
-          loader={async () => {
-            await requireAuth()
-            return hostVansLoader()
-          }}
+          loader={hostVansLoader}
           errorElement={<Error />}
         />
         <Route
           path="host-vans/:id"
           element={<HostVanDetail />}
-          loader={async ({ params }) => {
-            await requireAuth()
-            return hostVanDetailLoader({ params })
-          }}
+          loader={hostVanDetailLoader}
           errorElement={<Error />}
         >
           <Route

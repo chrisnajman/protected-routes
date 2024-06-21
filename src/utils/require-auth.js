@@ -1,21 +1,12 @@
 import { redirect } from "react-router-dom"
 
-// export async function requireAuth() {
-//   const isLoggedIn = false
-//   const response = redirect("/login")
-
-//   if (!isLoggedIn) {
-//     return Object.defineProperty(response, "body", { value: true })
-//   }
-
-//   return null
-// }
-
 export async function requireAuth() {
   const isLoggedIn = false
 
   if (!isLoggedIn) {
-    const response = redirect("/login")
+    const response = redirect(
+      "/login?message=You must log in to view Hosts pages"
+    )
     Object.defineProperty(response, "body", { value: true })
     throw response
   }
