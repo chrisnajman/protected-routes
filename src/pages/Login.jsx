@@ -41,8 +41,10 @@ function Login() {
   return (
     <div className="login-container content-container">
       <h1>Log in to your account</h1>
-      {message && <p>{message}</p>}
-      {error && <p>{error.message}</p>}
+      <ul>
+        {message && <li>{message}</li>}
+        {error && <li>{error.message}</li>}
+      </ul>
       <form
         onSubmit={handleSubmit}
         className="login-form"
