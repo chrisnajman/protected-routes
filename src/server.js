@@ -1,4 +1,4 @@
-import { createServer, Model } from "miragejs"
+import { createServer, Model, Response } from "miragejs"
 
 createServer({
   models: {
@@ -113,33 +113,35 @@ createServer({
     // eslint-disable-next-line no-unused-vars
     this.get("/host/host-vans", (schema, request) => {
       return schema.vans.all()
+      // Hard-code the hostId for now
+      // return schema.vans.where({ hostId: "123" })
     })
 
     this.get("/host/host-vans/:id", (schema, request) => {
       const id = request.params.id
       return schema.vans.find(id)
+      // return schema.vans.findBy({ id, hostId: "123" })
     })
 
     this.post("/login", (schema, request) => {
       const { email, password } = JSON.parse(request.requestBody)
-      // This is an extremely naive version of authentication. Please don't
-      // do this in the real world, and never save raw text passwords
-      // in your database 😇
       const foundUser = schema.users.findBy({ email, password })
+
       if (!foundUser) {
-        return new Response(
+        const response = new Response(
           401,
           {},
           { message: "No user with those credentials found!" }
         )
+        return response
       }
 
-      // At the very least, don't send the password back to the client 😅
       foundUser.password = undefined
-      return {
+      const response = {
         user: foundUser,
         token: "Enjoy your pizza, here's your tokens.",
       }
+      return response
     })
   },
 })

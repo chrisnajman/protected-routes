@@ -33,17 +33,21 @@ export async function getHostVans(id) {
 export async function loginUser(creds) {
   const res = await fetch(`${baseUrl}/api/login`, {
     method: "post",
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify(creds),
   })
-  const data = await res.json()
 
   if (!res.ok) {
+    const errorData = await res.json()
     throw {
-      message: data.message,
+      message: errorData.message,
       statusText: res.statusText,
       status: res.status,
     }
   }
 
+  const data = await res.json()
   return data
 }

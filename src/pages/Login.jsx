@@ -8,16 +8,27 @@ export function loader({ request }) {
 }
 
 function Login() {
-  const message = useLoaderData()
-
   const [loginFormData, setLoginFormData] = useState({
     email: "",
     password: "",
   })
+  const [status, setStatus] = useState("idle")
+  const [error, setError] = useState(null)
+
+  const message = useLoaderData()
 
   function handleSubmit(e) {
     e.preventDefault()
-    loginUser(loginFormData).then((data) => console.log(data))
+    setStatus("submitting")
+    setError(null)
+    loginUser(loginFormData)
+      .then((data) => {
+        console.log(data)
+      })
+      .catch((err) => {
+        setError(err)
+      })
+      .finally(() => setStatus("idle"))
   }
 
   function handleChange(e) {
@@ -31,6 +42,7 @@ function Login() {
     <div className="login-container content-container">
       <h1>Log in to your account</h1>
       {message && <p>{message}</p>}
+      {error && <p>{error.message}</p>}
       <form
         onSubmit={handleSubmit}
         className="login-form"
@@ -62,8 +74,9 @@ function Login() {
         <button
           type="submit"
           className="link-button"
+          disabled={status === "submitting"}
         >
-          Log in
+          {status === "submitting" ? "Logging in..." : "Log in"}
         </button>
       </form>
     </div>

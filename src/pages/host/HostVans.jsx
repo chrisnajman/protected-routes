@@ -12,8 +12,12 @@ export async function loader() {
 function HostVans() {
   const vans = useLoaderData()
 
+  // If this stops working, get rid of filter,
+  // And reinstate default code (where hostVanId = "123") in server.js
+
   // hostId 123 or 456 or 789
   const hostVanId = "123"
+
   const vanList = vans
     .filter((van) => van.hostId === hostVanId)
     .map((van) => {
