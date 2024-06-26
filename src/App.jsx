@@ -5,7 +5,10 @@ import {
   createRoutesFromElements,
 } from "react-router-dom"
 import Layout from "./layout/Layout"
-import Login, { loader as loginLoader } from "./pages/Login"
+import Login, {
+  loader as loginLoader,
+  action as loginAction,
+} from "./pages/Login"
 import Home from "./pages/Home"
 import About from "./pages/About"
 import Vans, { loader as vansLoader } from "./pages/vans/Vans"
@@ -37,6 +40,7 @@ const router = createBrowserRouter(
         path="login"
         element={<Login />}
         loader={loginLoader}
+        action={loginAction}
       />
       <Route
         path="about"

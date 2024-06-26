@@ -659,9 +659,18 @@ img {
 
 /** Login */
 
-.login-container p {
-  text-align: center;
+.login-container {
+  & p,
+  & li {
+    text-align: center;
+  }
+  & .error-messages {
+    list-style: none;
+    padding: 0;
+    font-weight: 600;
+  }
 }
+
 .login-form {
   display: flex;
   flex-direction: column;

@@ -131,7 +131,7 @@ createServer({
         const response = new Response(
           401,
           {},
-          { message: "No user with those credentials found!" }
+          { message: "No user with those credentials found..?" }
         )
         return response
       }
@@ -139,7 +139,7 @@ createServer({
       foundUser.password = undefined
       const response = {
         user: foundUser,
-        token: "Enjoy your pizza, here's your tokens.",
+        token: "Token string.",
       }
       return response
     })

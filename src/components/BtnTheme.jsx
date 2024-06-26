@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react"
-
+import { THEME_KEY } from "../utils/localStorageKeys"
 function BtnTheme() {
   function getStoredTheme() {
     try {
-      const storedTheme = localStorage.getItem("theme-vanlife")
+      const storedTheme = localStorage.getItem(THEME_KEY)
       return storedTheme ? JSON.parse(storedTheme) : false
     } catch (error) {
       console.error("Error parsing theme from localStorage:", error)
@@ -15,7 +15,7 @@ function BtnTheme() {
 
   useEffect(() => {
     document.documentElement.classList.toggle("lightmode", theme)
-    localStorage.setItem("theme-vanlife", theme)
+    localStorage.setItem(THEME_KEY, theme)
   }, [theme])
 
   function handleMode() {

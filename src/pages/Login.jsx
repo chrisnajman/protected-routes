@@ -1,53 +1,53 @@
-import { useState } from "react"
-import { useLoaderData } from "react-router-dom"
+import {
+  useActionData,
+  useLoaderData,
+  useNavigation,
+  Form,
+  redirect,
+} from "react-router-dom"
 import { loginUser } from "../api"
+import { LOGGEDIN_KEY } from "../utils/localStorageKeys"
 
 // eslint-disable-next-line react-refresh/only-export-components
 export function loader({ request }) {
   return new URL(request.url).searchParams.get("message")
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
+export async function action({ request }) {
+  const formData = await request.formData()
+  const email = formData.get("email")
+  const password = formData.get("password")
+  try {
+    await loginUser({ email, password })
+    localStorage.setItem(LOGGEDIN_KEY, true)
+    const response = redirect("/host")
+    Object.defineProperty(response, "body", { value: true })
+
+    return response
+  } catch (err) {
+    return err.message
+  }
+}
+
 function Login() {
-  const [loginFormData, setLoginFormData] = useState({
-    email: "",
-    password: "",
-  })
-  const [status, setStatus] = useState("idle")
-  const [error, setError] = useState(null)
-
   const message = useLoaderData()
+  const errorMessage = useActionData()
+  const submission = useNavigation()
 
-  function handleSubmit(e) {
-    e.preventDefault()
-    setStatus("submitting")
-    setError(null)
-    loginUser(loginFormData)
-      .then((data) => {
-        console.log(data)
-      })
-      .catch((err) => {
-        setError(err)
-      })
-      .finally(() => setStatus("idle"))
-  }
-
-  function handleChange(e) {
-    const { name, value } = e.target
-    setLoginFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }))
-  }
   return (
     <div className="login-container content-container">
       <h1>Log in to your account</h1>
-      <ul>
+      <ul className="error-messages">
         {message && <li>{message}</li>}
-        {error && <li>{error.message}</li>}
+        {errorMessage && (
+          <li className="login-error-message">{errorMessage}</li>
+        )}
       </ul>
-      <form
-        onSubmit={handleSubmit}
+      <Form
+        method="post"
         className="login-form"
+        replace
       >
         <div>
           <div className="login-input">
@@ -55,10 +55,8 @@ function Login() {
             <input
               id="email"
               name="email"
-              onChange={handleChange}
               type="email"
               placeholder="Email address"
-              value={loginFormData.email}
             />
           </div>
           <div className="login-input">
@@ -66,21 +64,19 @@ function Login() {
             <input
               id="password"
               name="password"
-              onChange={handleChange}
               type="password"
               placeholder="Password"
-              value={loginFormData.password}
             />
           </div>
         </div>
         <button
           type="submit"
           className="link-button"
-          disabled={status === "submitting"}
+          disabled={submission.state === "submitting"}
         >
-          {status === "submitting" ? "Logging in..." : "Log in"}
+          {submission.state === "submitting" ? "Logging in..." : "Log in"}
         </button>
-      </form>
+      </Form>
     </div>
   )
 }
