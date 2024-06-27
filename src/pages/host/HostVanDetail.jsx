@@ -6,8 +6,8 @@ import { requireAuth } from "../../utils/require-auth"
 import { getHostVans } from "../../api.js"
 
 // eslint-disable-next-line react-refresh/only-export-components
-export async function loader({ params }) {
-  await requireAuth()
+export async function loader({ params, request }) {
+  await requireAuth(request)
   return getHostVans(params.id)
 }
 

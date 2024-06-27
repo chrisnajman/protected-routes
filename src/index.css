@@ -19,6 +19,7 @@
   color: var(--fg);
   --shadow: 3px 3px 5px 0px rgba(0, 0, 0, 0.33);
   --btn-blue: #405cf5;
+  --nav-active: orangered;
   --host-nav-bg: var(--bg);
   --list-marker: var(--fg);
 }
@@ -238,13 +239,26 @@ img {
   }
 
   & a {
+    padding-block-end: 0.5rem;
     text-decoration: none;
     color: var(--fg);
     border-width: 0 0 0.5rem 0;
     border-style: solid;
     border-color: transparent;
     &.active {
-      border-color: var(--btn-blue);
+      border-color: var(--nav-active);
+      @media (hover: hover) {
+        &:hover {
+          border-color: var(--nav-active);
+          cursor: default;
+        }
+      }
+    }
+
+    @media (hover: hover) {
+      &:hover {
+        border-color: var(--btn-blue);
+      }
     }
   }
 }
